@@ -2,5 +2,5 @@ langgraph == 1.1.0
 langchain == 1.2.11
 langgraph.checkpoint.sqlite = 3.0.3
 streamlit == 1.55.0
-langchain-openai == 1.1.11
+langchain-MODEL == x.x.x
 tavily == 1.1.0

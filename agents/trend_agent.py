@@ -23,9 +23,9 @@ import json
 import logging
 from datetime import datetime
     
-from langchain_openai import ChatOpenAI
+from langchain_MODEL import ChatMODEL
 from langchain_core.messages import SystemMessage, HumanMessage
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 from graph.state import ContentState
 from tools.search_tools import TREND_TOOLS
@@ -44,16 +44,16 @@ def _build_trend_agent():
     """
     Construct and return the ReAct agent for trend research.
     """
-    llm = ChatOpenAI(
-        model="gpt-4o",  # Best balance of speed + reasoning for tool use
+    llm = ChatMODEL(
+        model="MODEL",  # Best balance of speed + reasoning for tool use
         temperature=0.3,    # Low temp = more consistent JSON output; slight creativity for topic selection
-        max_completion_tokens=2048,    # Trend research responses are verbose; 2k is enough
+        max_tokens=2048,    # Trend research responses are verbose; 2k is enough
     )
 
-    agent = create_react_agent(
+    agent = create_agent(
         model=llm,
         tools=TREND_TOOLS,
-        state_modifier=TREND_AGENT_SYSTEM_PROMPT,
+        system_prompt=TREND_AGENT_SYSTEM_PROMPT,
     )
 
     return agent
