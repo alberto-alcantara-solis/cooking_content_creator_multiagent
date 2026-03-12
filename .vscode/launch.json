@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Name Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/path_to_test.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "python": "${workspaceFolder}/venv/Scripts/python.exe"
+        }
+    ]
+}

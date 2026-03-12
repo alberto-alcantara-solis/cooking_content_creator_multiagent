@@ -1,2 +1,4 @@
 .env
 guide.md
+venv/
+__pycache__/
