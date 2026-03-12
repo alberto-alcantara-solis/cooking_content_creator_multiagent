@@ -33,7 +33,7 @@ def run():
     print("\n⏸️  Graph paused for human review.")
     print(f"Thread ID saved: {thread_id}")
     print("Open the Streamlit UI to review and approve.")
-    print(f"\n👉 Run: streamlit run ui/review_app.py -- --thread_id {thread_id}")
+    print(f"\n👉 Run: streamlit run ui/human_approval_app.py -- --thread_id {thread_id}")
 
 if __name__ == "__main__":
     run()

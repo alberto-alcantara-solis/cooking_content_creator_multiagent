@@ -1,5 +1,8 @@
-import streamlit as st
+import os
 import sys
+import streamlit as st
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from graph.builder import build_graph
 
 def main():
@@ -26,8 +29,8 @@ def main():
 
     with col2:
         st.subheader("📱 Instagram")
-        st.text_area("Caption", state["instagram_content"]["caption"], height=150)
-        st.write("Hashtags:", " ".join(state["instagram_content"]["hashtags"]))
+        st.text_area("Caption", value=state["instagram_content"]["caption"] if state["instagram_content"] else "", height=150)
+        st.write("Hashtags:", " ".join(state["instagram_content"]["hashtags"]) if state["instagram_content"] else "")
 
     st.divider()
 
