@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: End-to-End Test",
+            "name": "Python: Name Test",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/tests/test_end_to_end.py",
+            "program": "${workspaceFolder}/tests/path_to_test.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "python": "${workspaceFolder}/venv/Scripts/python.exe"
