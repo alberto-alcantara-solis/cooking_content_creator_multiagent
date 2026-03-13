@@ -23,7 +23,7 @@ import json
 import logging
 from datetime import datetime
     
-from langchain_MODEL import ChatMODEL
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain.agents import create_agent
 
@@ -44,10 +44,10 @@ def _build_trend_agent():
     """
     Construct and return the ReAct agent for trend research.
     """
-    llm = ChatMODEL(
-        model="MODEL",  # Best balance of speed + reasoning for tool use
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",  # Best balance of speed + reasoning for tool use
         temperature=0.3,    # Low temp = more consistent JSON output; slight creativity for topic selection
-        max_tokens=2048,    # Trend research responses are verbose; 2k is enough
+        max_tokens=4096,    # Trend research responses are verbose;
     )
 
     agent = create_agent(
@@ -164,7 +164,7 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
         # Invoke the agent (full ReAct loop)
         result = _agent.invoke(agent_input)
 
-        raw_response = result["messages"][-1].content
+        raw_response = result["messages"][-1].content[0]["text"]
         logger.debug("Trend agent raw response (attempt %d):\n%s", attempt + 1, raw_response)
 
         try:
