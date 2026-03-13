@@ -147,6 +147,7 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
     }
 
     last_error = None
+    raw_response = ""
 
     for attempt in range(max_retries + 1):
         if attempt > 0:
