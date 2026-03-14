@@ -190,7 +190,6 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  LangGraph Node
-#  The returned dict is MERGED into ContentState (only keys present are updated).
 # ─────────────────────────────────────────────────────────────────────────────
 def trend_node(state: ContentState) -> dict:
     """

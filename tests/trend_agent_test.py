@@ -14,7 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from agents.trend_agent import trend_node
 from graph.state import ContentState
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s")
 
 AVOID_TOPICS = []
 
