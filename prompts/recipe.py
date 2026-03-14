@@ -1,14 +1,14 @@
 """
 prompts/recipe.py
 ─────────────────
-All prompt strings for the Recipe Generation Agent.
+All prompt strings for the Recipe Generation Node.
 """
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  SYSTEM PROMPT
 # ─────────────────────────────────────────────────────────────────────────────
-RECIPE_AGENT_SYSTEM_PROMPT = """You are an expert recipe developer and food content strategist for a cooking brand with a large social media following.
+RECIPE_NODE_SYSTEM_PROMPT = """You are an expert recipe developer and food content strategist for a cooking brand with a large social media following.
 
 Your job is to create ONE engaging recipe based on a trending food topic.
 The recipe must feel fresh, achievable at home, and optimised for social media virality.
@@ -75,7 +75,7 @@ No markdown fences, no preamble, no commentary.
 # ─────────────────────────────────────────────────────────────────────────────
 #  HUMAN PROMPT
 # ─────────────────────────────────────────────────────────────────────────────
-RECIPE_AGENT_HUMAN_PROMPT = """Create a recipe for the following trending food topic:
+RECIPE_NODE_HUMAN_PROMPT = """Create a recipe for the following trending food topic:
 
 TOPIC: {selected_topic}
 
@@ -94,7 +94,7 @@ Respond with the JSON object only. No other text.
 # ─────────────────────────────────────────────────────────────────────────────
 #  RETRY PROMPT
 # ─────────────────────────────────────────────────────────────────────────────
-RECIPE_AGENT_RETRY_PROMPT = """Your previous response could not be parsed. Here is the error:
+RECIPE_NODE_RETRY_PROMPT = """Your previous response could not be parsed. Here is the error:
 
 ERROR: {error_message}
 
@@ -132,7 +132,7 @@ def build_recipe_human_message(selected_topic: str, trending_topics: list[str]) 
         else ""
     )
 
-    return RECIPE_AGENT_HUMAN_PROMPT.format(
+    return RECIPE_NODE_HUMAN_PROMPT.format(
         selected_topic=selected_topic,
         trend_context_block=trend_context_block
     )

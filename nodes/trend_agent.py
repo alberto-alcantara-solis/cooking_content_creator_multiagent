@@ -4,7 +4,7 @@ agents/trend_agent.py
 The Trend Research Agent - first agent in the content pipeline.
 
 Role in the graph (from builder.py):
-    orchestrator → [TREND AGENT] → recipe_agent → ...
+    orchestrator → [TREND AGENT] → recipe_node → ...
 
 Responsibility:
     1. Use search tools to discover what's trending in food/cooking RIGHT NOW

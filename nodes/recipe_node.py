@@ -1,10 +1,10 @@
 """
-agents/recipe_agent.py
+nodes/recipe_node.py
 ──────────────────────
-The Recipe Generation Agent - second agent in the content pipeline.
+The Recipe Generation Node - second node in the content pipeline.
 
 Role in the graph (from builder.py):
-    trend_agent → [RECIPE AGENT] → content_agent
+    trend_agent → [RECIPE NODE] → content_node
                                  → image_agent   (parallel)
 
 Responsibility:
@@ -25,14 +25,14 @@ from langchain_core.messages import SystemMessage, HumanMessage
 
 from graph.state import ContentState, RecipeData
 from prompts.recipe import (
-    RECIPE_AGENT_SYSTEM_PROMPT,
-    RECIPE_AGENT_RETRY_PROMPT,
+    RECIPE_NODE_SYSTEM_PROMPT,
+    RECIPE_NODE_RETRY_PROMPT,
     build_recipe_human_message,
 )
 
 
 # ── Logger ──────────────────────────────────────────────────────────────────
-logger = logging.getLogger("recipe_agent")
+logger = logging.getLogger("recipe_node")
 
 
 def _build_recipe_llm() -> ChatGoogleGenerativeAI:
@@ -49,7 +49,7 @@ def _build_recipe_llm() -> ChatGoogleGenerativeAI:
 # Build once at import time
 _llm = _build_recipe_llm()
 
-_SYSTEM_MESSAGE = SystemMessage(content=RECIPE_AGENT_SYSTEM_PROMPT)
+_SYSTEM_MESSAGE = SystemMessage(content=RECIPE_NODE_SYSTEM_PROMPT)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ def _parse_recipe_output(raw_text: str) -> RecipeData:
 # ─────────────────────────────────────────────────────────────────────────────
 #  Core LLM invocation with retry
 # ─────────────────────────────────────────────────────────────────────────────
-def _invoke_recipe_agent(selected_topic: str, trending_topics: list[str], max_retries: int = 2) -> RecipeData:
+def _invoke_recipe_node(selected_topic: str, trending_topics: list[str], max_retries: int = 2) -> RecipeData:
     """
     Call the LLM to generate a recipe and return a validated RecipeData dict.
 
@@ -159,12 +159,12 @@ def _invoke_recipe_agent(selected_topic: str, trending_topics: list[str], max_re
     for attempt in range(max_retries + 1):
         if attempt > 0:
             logger.warning(
-                "Recipe agent retry %d/%d due to: %s", attempt, max_retries, last_error
+                "Recipe node retry %d/%d due to: %s", attempt, max_retries, last_error
             )
             
             messages.append(
                 HumanMessage(
-                    content=RECIPE_AGENT_RETRY_PROMPT.format(
+                    content=RECIPE_NODE_RETRY_PROMPT.format(
                         error_message=str(last_error),
                         bad_response=raw_response,
                     )
@@ -179,12 +179,12 @@ def _invoke_recipe_agent(selected_topic: str, trending_topics: list[str], max_re
             if isinstance(result.content, str)
             else result.content[0].get("text", "")
         )
-        logger.debug("Recipe agent raw response (attempt %d):\n%s", attempt + 1, raw_response)
+        logger.debug("Recipe node raw response (attempt %d):\n%s", attempt + 1, raw_response)
 
         try:
             parsed = _parse_recipe_output(raw_response)
             logger.info(
-                "Recipe agent succeeded on attempt %d. Recipe: '%s' (%s, %s)",
+                "Recipe node succeeded on attempt %d. Recipe: '%s' (%s, %s)",
                 attempt + 1,
                 parsed["title"],
                 parsed["difficulty"],
@@ -197,7 +197,7 @@ def _invoke_recipe_agent(selected_topic: str, trending_topics: list[str], max_re
             # Loop continues to retry
 
     raise RuntimeError(
-        f"Recipe agent failed after {max_retries + 1} attempts. "
+        f"Recipe node failed after {max_retries + 1} attempts. "
         f"Last error: {last_error}"
     )
 
@@ -223,13 +223,13 @@ def recipe_node(state: ContentState) -> dict:
     current_step to signal failure without crashing the graph.
     """
     run_id = state.get("run_id", "unknown")
-    logger.info("=== Recipe Agent START (run_id=%s) ===", run_id)
+    logger.info("=== Recipe node START (run_id=%s) ===", run_id)
 
     selected_topic  = state.get("selected_topic", "")
     trending_topics = state.get("trending_topics", [])
 
     if not selected_topic:
-        error_msg = "recipe_agent: 'selected_topic' is empty — trend_agent may have failed."
+        error_msg = "recipe_node: 'selected_topic' is empty — trend_agent may have failed."
         logger.error(error_msg)
         existing_errors = state.get("errors", [])
         existing_errors.append(error_msg)
@@ -239,13 +239,13 @@ def recipe_node(state: ContentState) -> dict:
         }
 
     try:
-        recipe = _invoke_recipe_agent(
+        recipe = _invoke_recipe_node(
             selected_topic=selected_topic,
             trending_topics=trending_topics,
         )
 
         logger.info(
-            "Recipe Agent DONE. Title: '%s' | Difficulty: %s | Prep: %s",
+            "Recipe Node DONE. Title: '%s' | Difficulty: %s | Prep: %s",
             recipe["title"],
             recipe["difficulty"],
             recipe["prep_time"],
@@ -257,10 +257,10 @@ def recipe_node(state: ContentState) -> dict:
         }
 
     except Exception as e:
-        logger.exception("Recipe Agent FAILED: %s", e)
+        logger.exception("Recipe Node FAILED: %s", e)
 
         existing_errors = state.get("errors") or []
         return {
-            "errors":       existing_errors + [f"recipe_agent: {str(e)}"],
+            "errors":       existing_errors + [f"recipe_node: {str(e)}"],
             "current_step": "recipe_generation_failed",
         }
