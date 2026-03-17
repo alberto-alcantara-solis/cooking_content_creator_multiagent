@@ -8,13 +8,13 @@ A cooking related content creator multiagent
 - ✅Build Trend Agent
 - ✅Test Trend Agent
 - ✅Build Recipe node
+- ✅Test Recipe node
 
 ## In process:
-- ⌨️Test Recipe node
+- ⌨️Build Content node
+- ⌨️Test Content node
 
 ## Next steps:
-- 🔜Build Content node
-- 🔜Test Content node
 - 🔜Build Image Agent
 - 🔜Test Image Agent
 - 🔜Build Publisher Agent
@@ -27,3 +27,22 @@ A cooking related content creator multiagent
 
 ## Future improvements:
 - ✨Error Agent
+
+
+### How to make it work (Windows)
+```
+python3.11 -m venv venv
+venv/Scripts/activate
+pip install -r requirements.txt
+```
+
+Load .env variables (In powershell):
+```
+Get-Content .env | ForEach-Object {
+    if ($_ -match "^\s*([^#][^=]*)=(.*)$") {
+        $name = $matches[1].Trim()
+        $value = $matches[2].Trim()
+        [System.Environment]::SetEnvironmentVariable($name, $value, "Process")
+    }
+}
+```
