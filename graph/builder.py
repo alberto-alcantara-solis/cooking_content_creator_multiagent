@@ -2,12 +2,12 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from graph.state import ContentState
-from agents.orchestrator import orchestrator_node
-from agents.trend_agent import trend_node
-from agents.recipe_agent import recipe_node
-from agents.content_agent import content_node
-from agents.image_agent import image_node
-from agents.publisher_agent import publisher_node
+from nodes.orchestrator import orchestrator_node
+from nodes.trend_agent import trend_node
+from nodes.recipe_node import recipe_node
+from nodes.content_node import content_node
+from nodes.image_agent import image_node
+from nodes.publisher_agent import publisher_node
 from graph.human_approval import get_checkpointer
 
 
@@ -29,7 +29,7 @@ def route_after_review(state: ContentState) -> str:
     elif status == "rejected":
         return END
     elif status == "edit_requested":
-        return "content_agent"   # Re-generate content with feedback
+        return "content_node"   # Re-generate content with feedback
     return END
 
 
@@ -39,8 +39,8 @@ def build_graph():
     # --- Add nodes ---
     graph.add_node("orchestrator", orchestrator_node)
     graph.add_node("trend_agent", trend_node)
-    graph.add_node("recipe_agent", recipe_node)
-    graph.add_node("content_agent", content_node)
+    graph.add_node("recipe_node", recipe_node)
+    graph.add_node("content_node", content_node)
     graph.add_node("image_agent", image_node)
     graph.add_node("human_review", human_review_node)
     graph.add_node("publisher", publisher_node)
@@ -50,14 +50,14 @@ def build_graph():
 
     # --- Edges ---
     graph.add_edge("orchestrator", "trend_agent")
-    graph.add_edge("trend_agent", "recipe_agent")
+    graph.add_edge("trend_agent", "recipe_node")
 
-    # Parallel execution: after recipe, run content_agent AND image_agent simultaneously
-    graph.add_edge("recipe_agent", "content_agent")
-    graph.add_edge("recipe_agent", "image_agent")
+    # Parallel execution: after recipe, run content_node AND image_agent simultaneously
+    graph.add_edge("recipe_node", "content_node")
+    graph.add_edge("recipe_node", "image_agent")
 
     # Merge both parallel branches at human_review
-    graph.add_edge("content_agent", "human_review")
+    graph.add_edge("content_node", "human_review")
     graph.add_edge("image_agent", "human_review")
 
     # Conditional edge after human reviews
@@ -66,7 +66,7 @@ def build_graph():
         route_after_review,
         {
             "publisher": "publisher",
-            "content_agent": "content_agent",   # edit loop
+            "content_node": "content_node",   # edit loop
             END: END
         }
     )

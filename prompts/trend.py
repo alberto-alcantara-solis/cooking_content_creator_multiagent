@@ -44,6 +44,10 @@ Score each candidate topic out of 10 across these dimensions:
   • Seasonal relevance  - Is at least one key ingredient in season?
   • Differentiation     - Is it under-covered vs competitors this week?
 
+Also consider:
+  • Avoid topics that have been used in the last few runs (see avoid_topics in human prompt)
+  • If topic_override is set in the human prompt, prioritize that topic but still do research to fill trending_topics for human reference.
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 OUTPUT FORMAT  (CRITICAL - follow exactly)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -65,8 +69,8 @@ no preamble, no explanation outside the JSON.
 }
 
 Rules:
-  - trending_topics must contain exactly 5 items, and must be distinct from each other and from the avoid_topics list in state (if any)
-  - selected_topic must be one of the 5 items in trending_topics, unless topic_override is set, in which case selected_topic must be the override value without needing to be in trending_topics
+  - trending_topics must contain exactly 5 items, and must be distinct from each other
+  - selected_topic must be one of the 5 items in trending_topics and NOT be similar to items in avoid_topics, unless topic_override is set, in which case selected_topic must be the override value without needing to be in trending_topics
   - Each topic must be a concrete, specific recipe/food concept — NOT vague 
     categories like "Italian food" but rather "crispy viral smash tacos" or 
     "one-pan orzo with lemon"
@@ -106,7 +110,7 @@ Do not include any text, markdown code fences, or explanation outside the JSON.
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  Helper: build the human message at runtime
+#  Helper: Human Message Builder
 # ─────────────────────────────────────────────────────────────────────────────
 def build_trend_human_message(avoid_topics: list[str] | None, topic_override: str | None) -> str:
     """

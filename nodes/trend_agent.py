@@ -4,7 +4,7 @@ agents/trend_agent.py
 The Trend Research Agent - first agent in the content pipeline.
 
 Role in the graph (from builder.py):
-    orchestrator → [TREND AGENT] → recipe_agent → ...
+    orchestrator → [TREND AGENT] → recipe_node → ...
 
 Responsibility:
     1. Use search tools to discover what's trending in food/cooking RIGHT NOW
@@ -147,6 +147,7 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
     }
 
     last_error = None
+    raw_response = ""
 
     for attempt in range(max_retries + 1):
         if attempt > 0:
@@ -189,7 +190,6 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  LangGraph Node
-#  The returned dict is MERGED into ContentState (only keys present are updated).
 # ─────────────────────────────────────────────────────────────────────────────
 def trend_node(state: ContentState) -> dict:
     """
