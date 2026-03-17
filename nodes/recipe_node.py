@@ -35,6 +35,9 @@ from prompts.recipe import (
 logger = logging.getLogger("recipe_node")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+#  LLM setup
+# ─────────────────────────────────────────────────────────────────────────────
 def _build_recipe_llm() -> ChatGoogleGenerativeAI:
     """
     Instantiate the LLM used for recipe generation.
