@@ -119,7 +119,7 @@ TEST_STATE_1_CONTENT = {
             "#peacrostini"
         ],
         "character_count": 1789
-        },
+    },
     "image": {"status": "pending", "comfyui_prompt": "", "local_path": ""},
     "human_review": {"status": "pending", "feedback": None},
     "buffer_ig_post_id": None,
