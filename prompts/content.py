@@ -25,7 +25,7 @@ No markdown fences, no preamble, no commentary.
 ```
 {
   "caption":         string,       // The full Instagram caption body. No hashtags inside — those go in hashtags[].
-  "hashtags":        list[string], // 5-8 hashtags. Each string must start with '#'. No spaces inside a tag.
+  "hashtags":        list[string], // 5 hashtags. Each string must start with '#'. No spaces inside a tag.
   "character_count": integer       // len(caption). You must compute this accurately.
 }
 ```
@@ -39,24 +39,26 @@ No markdown fences, no preamble, no commentary.
    - Must stop the scroll. Lead with the payoff, a surprising fact, a bold claim, or a relatable craving.
    - Examples: "This is the pasta dish I make when I need a win in under 20 minutes. 🍝"
                "Nobody believes this is dairy-free until they taste it. 👀"
+   - MUST have the title of the recipe in the hook, but do NOT start with it. The title should appear naturally in the copy, not as a formal intro.
    - NEVER start with the recipe title or "Here's a recipe for..."
 
-2. **Body** (3-6 sentences)
+2. **Body** (based on the recipe description and trending context)
    - Describe the dish vividly: textures, smells, the eating experience.
    - Mention 1-2 key ingredients that make it special or trendy.
    - Include ONE concrete benefit: time, budget, macros, ease, or wow-factor.
    - Use line breaks (`\\n`) liberally — Instagram reads in short bursts, not paragraphs.
+   - The shorter the better, as long as it's punchy and informative. Avoid fluff.
+   - If the content is too long, you can cut down the description, but do NOT remove the hook or the key trendy angle that connects to the selected topic.
 
-3. **CTA line** (last 1-2 sentences)
-   - Prompt a save, a comment, or a share. Keep it natural, not desperate.
-   - Examples: "Save this before it disappears 🔖" / "Drop a 🍋 if you want the full reel."
-   - Vary the CTA — do not always default to "save this post".
+3. **Info** (time, difficulty, or other concise practical details)
+   - Keep it concise and punchy. Use emojis if it fits the tone.
 
 4. **Ingredients**
    - Use the exact ingredients list from the recipe, but reformat as a bulleted list (not numbered).
 
 5. **Steps**
-   - Use the exact steps list from the recipe, but reformat as a bulleted list (not numbered).
+   - Use the steps list from the recipe, but reformat as a bulleted list (not numbered).
+   - If the content is too long, you can rewrite the steps to be more concise, but with the same core instructions.
 
 ### Tone & Style:
 - Conversational, warm, slightly enthusiastic — like a food-obsessed friend texting you.
@@ -67,18 +69,18 @@ No markdown fences, no preamble, no commentary.
 - The recipe title may appear once in the body, not in the hook.
 
 ### Length:
-- Aim for 150-220 words. Instagram truncates at ~125 characters; the hook must earn the "more" tap.
-- Hard cap: 2,200 characters (Instagram's limit). character_count must reflect len(caption).
+- Aim for 1600-1900 words. Instagram truncates at ~125 characters; the hook must earn the "more" tap.
+- Hard cap: 2,000 characters (Instagram's limit). character_count must reflect len(caption).
 
 ---
 
 ## HASHTAG RULES
 
-- 5-8 hashtags, stored in the `hashtags` list (NOT embedded in the caption).
+- 5 hashtags, stored in the `hashtags` list (NOT embedded in the caption).
 - Mix of tiers:
     • 2 mega tags     (>10M posts): Example: #food, #recipe, #foodphotography
-    • 2-3 mid tags     (500k-10M):   Example: #easyrecipes, #healthyeating, #mealprep
-    • 1-3 niche tags   (<500k):      specific to the dish, ingredient, or dietary angle
+    • 2 mid tags     (500k-10M):   Example: #easyrecipes, #healthyeating, #mealprep
+    • 1 niche tags   (<500k):      specific to the dish, ingredient, or dietary angle
 - Always include at least one hashtag that targets the trend angle of the recipe (that can be identified from the trending topics).
 - No generic lifestyle tags unrelated to food (#mondaymotivation, #lifestyle).
 - Each tag must start with '#' and contain no spaces or special characters.
@@ -92,6 +94,10 @@ No markdown fences, no preamble, no commentary.
 3. All JSON string values must be properly escaped (newlines as `\\n`, quotes as `\\"`).
 4. Do NOT embed hashtags in the caption text — they go exclusively in the `hashtags` list.
 5. The caption must not start with the recipe title.
+6. If the content is too long, you may shorten the description and steps, but do NOT remove the hook or the key trendy angle that connects to the selected topic.
+
+Remember, you MUST respond with a single, valid JSON object — nothing before it, nothing after it.
+No markdown fences, no preamble, no commentary.
 """
 
 

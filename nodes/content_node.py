@@ -55,7 +55,7 @@ def _build_content_llm() -> ChatGoogleGenerativeAI:
     return ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
         temperature=0.75,   # More creative than recipe_node; captions need voice and personality
-        max_tokens=2048,    # Caption + hashtags fit comfortably within this budget
+        max_tokens=4096,    # Caption + hashtags fit comfortably within this budget
     )
 
 
@@ -65,9 +65,8 @@ _llm = _build_content_llm()
 _SYSTEM_MESSAGE = SystemMessage(content=CONTENT_NODE_SYSTEM_PROMPT)
 
 # Instagram hard limits (used in validation)
-_IG_CAPTION_MAX_CHARS = 2200
+_IG_CAPTION_MAX_CHARS = 2000
 _HASHTAG_MIN = 5
-_HASHTAG_MAX = 8
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -120,9 +119,9 @@ def _parse_content_output(raw_text: str) -> PlatformContent:
 
     hashtags = data["hashtags"]
 
-    if not (_HASHTAG_MIN <= len(hashtags) <= _HASHTAG_MAX):
+    if not (len(hashtags) >= _HASHTAG_MIN):
         raise ValueError(
-            f"'hashtags' must contain {_HASHTAG_MIN}-{_HASHTAG_MAX} items, "
+            f"'hashtags' must contain at least {_HASHTAG_MIN} items, "
             f"got {len(hashtags)}."
         )
 
@@ -151,7 +150,7 @@ def _parse_content_output(raw_text: str) -> PlatformContent:
 # ─────────────────────────────────────────────────────────────────────────────
 #  Core LLM invocation with retry
 # ─────────────────────────────────────────────────────────────────────────────
-def _invoke_content_node(human_turn_message: str, max_retries: int = 2) -> PlatformContent:
+def _invoke_content_node(human_turn_message: str, max_retries: int = 3) -> PlatformContent:
     """
     Call the LLM to generate (or revise) Instagram content and return a
     validated PlatformContent dict.
