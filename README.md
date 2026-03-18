@@ -9,14 +9,14 @@ A cooking related content creator multiagent
 - ✅Test Trend Agent
 - ✅Build Recipe node
 - ✅Test Recipe node
+- ✅Build Content node
+- ✅Test Content node
 
 ## In process:
-- ⌨️Build Content node
-- ⌨️Test Content node
+- ⌨️Build Image Agent
+- ⌨️Test Image Agent
 
 ## Next steps:
-- 🔜Build Image Agent
-- 🔜Test Image Agent
 - 🔜Build Publisher Agent
 - 🔜Test Publisher Agent
 - 🔜Build Orchestrator Agent
