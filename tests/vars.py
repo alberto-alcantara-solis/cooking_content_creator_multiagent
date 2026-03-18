@@ -28,46 +28,101 @@ TEST_STATE_1_RECIPE = {
 }
 
 TEST_STATE_1_PARALLEL = {
-        "run_id": "PARALLEL_test_run_XXX",
-        "current_step": "recipe_generation_complete",
-        "trending_topics": ["Charli's Zero-Sugar Cheesecake", "Spring Pea Crostini", "Rhubarb Desserts", "Miso Butter Cabbage", "Nostalgic Sparkling Water", "Spring Pea Crostini with Ricotta"],
-        "selected_topic": "Spring Pea Crostini with Ricotta",
-        "recipe": {
-            "title": "Emerald Pea & Lemon Ricotta Crostini",
-            "description": "Bright, creamy, and bursting with spring flavor! These vibrant crostini are an effortless appetizer perfect for entertaining or a light, fresh snack.",
-            "ingredients": [
-                "1 baguette (approx. 300g), sliced into 1.5 cm (½ inch) rounds",
-                "60ml (¼ cup) extra virgin olive oil, plus more for drizzling",
-                "1 large clove garlic, peeled, halved",
-                "250g (1 cup) whole milk ricotta cheese",
-                "1 lemon, zested and juiced",
-                "300g (2 cups) fresh or frozen peas, defrosted if frozen",
-                "30g (¼ cup) fresh mint leaves, finely chopped, plus extra for garnish",
-                "½ teaspoon flaky sea salt, plus more to taste",
-                "¼ teaspoon freshly ground black pepper, plus more to taste",
-                "¼ teaspoon red pepper flakes, optional, for garnish"
-            ],
-            "steps": [
-                "Preheat your oven to 190°C (375°F) and arrange the baguette slices in a single layer on a baking sheet.",
-                "Brush both sides of the baguette slices generously with 30ml (2 tablespoons) of the olive oil.",
-                "Toast the baguette slices in the preheated oven for 8-10 minutes, or until lightly golden and crisp.",
-                "While the crostini are still warm, gently rub one side of each toasted slice with the cut side of the garlic clove.",
-                "In a small bowl, combine the ricotta cheese with half of the lemon zest, 1 tablespoon of lemon juice, a pinch of salt, and a pinch of black pepper, then stir until smooth and creamy.",
-                "Bring a small pot of salted water to a boil, add the peas, and cook for 1-2 minutes until bright green and tender-crisp.",
-                "Drain the peas immediately and transfer them to a medium bowl.",
-                "Add the remaining 30ml (2 tablespoons) of olive oil, the remaining lemon zest, 1 tablespoon of lemon juice, chopped mint, ½ teaspoon flaky sea salt, and ¼ teaspoon black pepper to the peas.",
-                "Using a fork or potato masher, coarsely mash the peas until they are mostly broken down but still have some texture.",
-                "To assemble, spread a generous layer of the lemon ricotta mixture onto each garlic-rubbed crostini.",
-                "Spoon a dollop of the mashed pea mixture over the ricotta on each crostini.",
-                "Arrange the crostini on a serving platter, drizzle with a little extra virgin olive oil, and garnish with fresh mint leaves and red pepper flakes, if desired."
-            ],
-            "prep_time": "25 minutes",
-            "difficulty": "Easy"
-        },
-        "instagram_content": None,
-        "image": {"status": "pending", "comfyui_prompt": "", "local_path": ""},
-        "human_review": {"status": "pending", "feedback": None},
-        "buffer_ig_post_id": None,
-        "published": False,
-        "errors": [],
-    }
+    "run_id": "PARALLEL_test_run_XXX",
+    "current_step": "recipe_generation_complete",
+    "trending_topics": ["Charli's Zero-Sugar Cheesecake", "Spring Pea Crostini", "Rhubarb Desserts", "Miso Butter Cabbage", "Nostalgic Sparkling Water", "Spring Pea Crostini with Ricotta"],
+    "selected_topic": "Spring Pea Crostini with Ricotta",
+    "recipe": {
+        "title": "Emerald Pea & Lemon Ricotta Crostini",
+        "description": "Bright, creamy, and bursting with spring flavor! These vibrant crostini are an effortless appetizer perfect for entertaining or a light, fresh snack.",
+        "ingredients": [
+            "1 baguette (approx. 300g), sliced into 1.5 cm (½ inch) rounds",
+            "60ml (¼ cup) extra virgin olive oil, plus more for drizzling",
+            "1 large clove garlic, peeled, halved",
+            "250g (1 cup) whole milk ricotta cheese",
+            "1 lemon, zested and juiced",
+            "300g (2 cups) fresh or frozen peas, defrosted if frozen",
+            "30g (¼ cup) fresh mint leaves, finely chopped, plus extra for garnish",
+            "½ teaspoon flaky sea salt, plus more to taste",
+            "¼ teaspoon freshly ground black pepper, plus more to taste",
+            "¼ teaspoon red pepper flakes, optional, for garnish"
+        ],
+        "steps": [
+            "Preheat your oven to 190°C (375°F) and arrange the baguette slices in a single layer on a baking sheet.",
+            "Brush both sides of the baguette slices generously with 30ml (2 tablespoons) of the olive oil.",
+            "Toast the baguette slices in the preheated oven for 8-10 minutes, or until lightly golden and crisp.",
+            "While the crostini are still warm, gently rub one side of each toasted slice with the cut side of the garlic clove.",
+            "In a small bowl, combine the ricotta cheese with half of the lemon zest, 1 tablespoon of lemon juice, a pinch of salt, and a pinch of black pepper, then stir until smooth and creamy.",
+            "Bring a small pot of salted water to a boil, add the peas, and cook for 1-2 minutes until bright green and tender-crisp.",
+            "Drain the peas immediately and transfer them to a medium bowl.",
+            "Add the remaining 30ml (2 tablespoons) of olive oil, the remaining lemon zest, 1 tablespoon of lemon juice, chopped mint, ½ teaspoon flaky sea salt, and ¼ teaspoon black pepper to the peas.",
+            "Using a fork or potato masher, coarsely mash the peas until they are mostly broken down but still have some texture.",
+            "To assemble, spread a generous layer of the lemon ricotta mixture onto each garlic-rubbed crostini.",
+            "Spoon a dollop of the mashed pea mixture over the ricotta on each crostini.",
+            "Arrange the crostini on a serving platter, drizzle with a little extra virgin olive oil, and garnish with fresh mint leaves and red pepper flakes, if desired."
+        ],
+        "prep_time": "25 minutes",
+        "difficulty": "Easy"
+    },
+    "instagram_content": None,
+    "image": {"status": "pending", "comfyui_prompt": "", "local_path": ""},
+    "human_review": {"status": "pending", "feedback": None},
+    "buffer_ig_post_id": None,
+    "published": False,
+    "errors": [],
+}
+
+TEST_STATE_1_CONTENT = {
+    "run_id": "PARALLEL_test_run_XXX",
+    "current_step": "recipe_generation_complete",
+    "trending_topics": ["Charli's Zero-Sugar Cheesecake", "Spring Pea Crostini", "Rhubarb Desserts", "Miso Butter Cabbage", "Nostalgic Sparkling Water", "Spring Pea Crostini with Ricotta"],
+    "selected_topic": "Spring Pea Crostini with Ricotta",
+    "recipe": {
+        "title": "Emerald Pea & Lemon Ricotta Crostini",
+        "description": "Bright, creamy, and bursting with spring flavor! These vibrant crostini are an effortless appetizer perfect for entertaining or a light, fresh snack.",
+        "ingredients": [
+            "1 baguette (approx. 300g), sliced into 1.5 cm (½ inch) rounds",
+            "60ml (¼ cup) extra virgin olive oil, plus more for drizzling",
+            "1 large clove garlic, peeled, halved",
+            "250g (1 cup) whole milk ricotta cheese",
+            "1 lemon, zested and juiced",
+            "300g (2 cups) fresh or frozen peas, defrosted if frozen",
+            "30g (¼ cup) fresh mint leaves, finely chopped, plus extra for garnish",
+            "½ teaspoon flaky sea salt, plus more to taste",
+            "¼ teaspoon freshly ground black pepper, plus more to taste",
+            "¼ teaspoon red pepper flakes, optional, for garnish"
+        ],
+        "steps": [
+            "Preheat your oven to 190°C (375°F) and arrange the baguette slices in a single layer on a baking sheet.",
+            "Brush both sides of the baguette slices generously with 30ml (2 tablespoons) of the olive oil.",
+            "Toast the baguette slices in the preheated oven for 8-10 minutes, or until lightly golden and crisp.",
+            "While the crostini are still warm, gently rub one side of each toasted slice with the cut side of the garlic clove.",
+            "In a small bowl, combine the ricotta cheese with half of the lemon zest, 1 tablespoon of lemon juice, a pinch of salt, and a pinch of black pepper, then stir until smooth and creamy.",
+            "Bring a small pot of salted water to a boil, add the peas, and cook for 1-2 minutes until bright green and tender-crisp.",
+            "Drain the peas immediately and transfer them to a medium bowl.",
+            "Add the remaining 30ml (2 tablespoons) of olive oil, the remaining lemon zest, 1 tablespoon of lemon juice, chopped mint, ½ teaspoon flaky sea salt, and ¼ teaspoon black pepper to the peas.",
+            "Using a fork or potato masher, coarsely mash the peas until they are mostly broken down but still have some texture.",
+            "To assemble, spread a generous layer of the lemon ricotta mixture onto each garlic-rubbed crostini.",
+            "Spoon a dollop of the mashed pea mixture over the ricotta on each crostini.",
+            "Arrange the crostini on a serving platter, drizzle with a little extra virgin olive oil, and garnish with fresh mint leaves and red pepper flakes, if desired."
+        ],
+        "prep_time": "25 minutes",
+        "difficulty": "Easy"
+    },
+    "instagram_content": {
+        "caption": "If you're looking for that perfect *spring* appetizer everyone's craving, you just found it. Our Emerald Pea & Lemon Ricotta Crostini are bright, fresh, and unbelievably easy to whip up. ✨\n\nEach bite is pure spring magic: crisp garlic crostini, creamy lemon ricotta, and a vibrant, minty pea mash. It's the kind of dish that makes a serious impression with minimal effort, perfect for entertaining or a light, sophisticated snack. That gorgeous green color? Absolutely stunning on any table. 🌿\n\nPrep time: 25 minutes\nDifficulty: Easy\n\nIngredients:\n• 1 baguette (approx. 300g), sliced into 1.5 cm (½ inch) rounds\n• 60ml (¼ cup) extra virgin olive oil, plus more for drizzling\n• 1 large clove garlic, peeled, halved\n• 250g (1 cup) whole milk ricotta cheese\n• 1 lemon, zested and juiced\n• 300g (2 cups) fresh or frozen peas, defrosted if frozen\n• 30g (¼ cup) fresh mint leaves, finely chopped, plus extra for garnish\n• ½ teaspoon flaky sea salt, plus more to taste\n• ¼ teaspoon freshly ground black pepper, plus more to taste\n• ¼ teaspoon red pepper flakes, optional, for garnish\n\nSteps:\n• Preheat oven to 190°C (375°F). Slice baguette, brush with 30ml olive oil, toast 8-10 min until golden.\n• While warm, rub toasted crostini with garlic clove.\n• Mix ricotta, half lemon zest, 1 tbsp lemon juice, pinch of salt & pepper until smooth.\n• Boil salted water, cook peas 1-2 min until bright green. Drain.\n• In a bowl, combine peas with remaining 30ml olive oil, remaining lemon zest, 1 tbsp lemon juice, chopped mint, ½ tsp salt, ¼ tsp pepper. Coarsely mash.\n• Assemble: Spread ricotta on crostini, top with pea mixture.\n• Garnish with extra olive oil, fresh mint, and red pepper flakes if desired.",
+        "hashtags": [
+            "#food",
+            "#recipe",
+            "#easyrecipes",
+            "#springfood",
+            "#peacrostini"
+        ],
+        "character_count": 1789
+    },
+    "image": {"status": "pending", "comfyui_prompt": "", "local_path": ""},
+    "human_review": {"status": "pending", "feedback": None},
+    "buffer_ig_post_id": None,
+    "published": False,
+    "errors": [],
+}

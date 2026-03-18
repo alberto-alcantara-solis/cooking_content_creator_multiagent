@@ -40,6 +40,9 @@ from prompts.trend import (
 logger = logging.getLogger("trend_agent")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+#  LLM setup
+# ─────────────────────────────────────────────────────────────────────────────
 def _build_trend_agent():
     """
     Construct and return the ReAct agent for trend research.
