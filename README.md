@@ -11,9 +11,9 @@ A cooking related content creator multiagent
 - ✅Test Recipe node
 - ✅Build Content node
 - ✅Test Content node
+- ✅Build Image Agent
 
 ## In process:
-- ⌨️Build Image Agent
 - ⌨️Test Image Agent
 
 ## Next steps:
