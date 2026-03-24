@@ -12,13 +12,13 @@ A cooking related content creator multiagent
 - ✅Build Content node
 - ✅Test Content node
 - ✅Build Image Agent
+- ✅Test Image Agent
 
 ## In process:
-- ⌨️Test Image Agent
+- ⌨️Build Publisher Agent
+- ⌨️Test Publisher Agent
 
 ## Next steps:
-- 🔜Build Publisher Agent
-- 🔜Test Publisher Agent
 - 🔜Build Orchestrator Agent
 - 🔜Test Orchestrator Agent
 - 🔜Test full workflow (with working human review)
