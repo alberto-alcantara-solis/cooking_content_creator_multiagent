@@ -84,7 +84,6 @@ A great food photography prompt combines:
                   Street/viral    → "vibrant colours, casual energy"
                   Healthy/clean   → "bright airy, clean white background"
 
-
 The absolute most important thing about the prompt is that you must picture how the finished dish should look, for example if two ingredients are mixed together, you must take the final mix color and texture into account rather than describing the raw ingredients. The image must look like the finished dish, not the raw ingredients.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

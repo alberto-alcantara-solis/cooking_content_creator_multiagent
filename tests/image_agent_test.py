@@ -170,9 +170,9 @@ def test_image_node_full_generation():
 
 
 if __name__ == "__main__":
-    #test_parse_image_agent_output_valid_json()
-    #test_parse_image_agent_output_invalid_json_raises()
-    #test_parse_image_agent_output_missing_required_field_raises()
-    #test_parse_image_agent_output_defaults_optional_fields()
-    #test_image_node_fails_with_missing_recipe()
+    test_parse_image_agent_output_valid_json()
+    test_parse_image_agent_output_invalid_json_raises()
+    test_parse_image_agent_output_missing_required_field_raises()
+    test_parse_image_agent_output_defaults_optional_fields()
+    test_image_node_fails_with_missing_recipe()
     test_image_node_full_generation()

@@ -21,7 +21,7 @@ logger = logging.getLogger("image_critique_tool")
 _vision_llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     temperature=0.2,  # Low temp for consistent, repeatable quality judgments
-    max_tokens=512,   # Verdict JSON is short
+    max_tokens=2048,   # Verdict JSON is short
 )
 
 
