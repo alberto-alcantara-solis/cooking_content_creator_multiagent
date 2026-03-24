@@ -41,7 +41,7 @@ logger = logging.getLogger("trend_agent")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  LLM setup
+#  Agent setup
 # ─────────────────────────────────────────────────────────────────────────────
 def _build_trend_agent():
     """
@@ -100,9 +100,7 @@ def _parse_trend_output(raw_text: str) -> dict:
 
     data = json.loads(cleaned[start:end])
 
-    # ── Schema validation ────────────────────────────────────────────────────
-    # We check the fields WE care about in ContentState.
-
+    #  Schema validation 
     if "trending_topics" not in data or not isinstance(data["trending_topics"], list):
         raise ValueError("Missing or invalid 'trending_topics' list.")
 
@@ -168,7 +166,12 @@ def _invoke_trend_agent(avoid_topics: list[str] | None, topic_override: str | No
         # Invoke the agent (full ReAct loop)
         result = _agent.invoke(agent_input)
 
-        raw_response = result["messages"][-1].content[0]["text"]
+        last_message = result["messages"][-1]
+        raw_response = (
+            last_message.content
+            if isinstance(last_message.content, str)
+            else last_message.content[0].get("text", "")
+        )
         logger.debug("Trend agent raw response (attempt %d):\n%s", attempt + 1, raw_response)
 
         try:

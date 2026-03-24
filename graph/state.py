@@ -35,6 +35,8 @@ class ContentState(TypedDict):
     # --- Trend Research ---
     trending_topics: list[str]
     selected_topic: str
+    avoid_topics: Optional[list[str]]
+    topic_override: Optional[str]
 
     # --- Recipe ---
     recipe: Optional[RecipeData]
