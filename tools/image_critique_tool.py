@@ -13,11 +13,10 @@ from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 
-from prompts.image import CRITIQUE_SYSTEM
+from prompts.image import CRITIQUE_SYSTEM, CRITIQUE_PASS_THRESHOLD
+
 
 logger = logging.getLogger("image_critique_tool")
-
-CRITIQUE_PASS_THRESHOLD = 7.0
 
 _vision_llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",

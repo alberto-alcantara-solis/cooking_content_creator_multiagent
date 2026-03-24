@@ -9,6 +9,7 @@ import logging
 import os
 import time
 import copy
+import uuid
 from pathlib import Path
 
 import requests
@@ -279,6 +280,7 @@ def generate_food_image(positive_prompt: str, run_id: str) -> str:
         The absolute local file path of the generated image (str),
         OR an error message string starting with "ERROR:" if generation failed.
     """
+    id = str(uuid.uuid4())[:8]
     comfyui_client = ComfyUIClient(run_id=run_id)
     logger.info(
         "generate_food_image called (run_id=%s). "
@@ -296,7 +298,7 @@ def generate_food_image(positive_prompt: str, run_id: str) -> str:
     try:
         local_path = comfyui_client.generate_image(
             positive_prompt=positive_prompt,
-            run_id=run_id,
+            run_id=run_id+id,
         )
         logger.info("generate_food_image: image saved to '%s'", local_path)
         return local_path

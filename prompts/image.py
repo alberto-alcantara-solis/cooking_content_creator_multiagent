@@ -5,7 +5,9 @@ All prompt templates used by the Image Agent.
 """
 
 from graph.state import RecipeData
-from tools.image_critique_tool import CRITIQUE_PASS_THRESHOLD
+
+
+CRITIQUE_PASS_THRESHOLD = 7.0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -82,10 +84,8 @@ A great food photography prompt combines:
                   Street/viral    → "vibrant colours, casual energy"
                   Healthy/clean   → "bright airy, clean white background"
 
-NEGATIVE prompt always includes:
-  "blurry, out of focus, low quality, watermark, text, logo, bad lighting,
-   overexposed, underexposed, plastic-looking food, artificial colours,
-   cartoon, illustration, drawing, ugly plating, messy, pixelated"
+
+The absolute most important thing about the prompt is that you must picture how the finished dish should look, for example if two ingredients are mixed together, you must take the final mix color and texture into account rather than describing the raw ingredients. The image must look like the finished dish, not the raw ingredients.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 OUTPUT FORMAT  (CRITICAL — Final Answer only)
