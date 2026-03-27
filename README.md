@@ -55,7 +55,7 @@ Dive into the heart of our cooking content creation multiagent system! This work
 
 ### 📊 **Workflow Diagram**
 
-![Human Approval App Screenshot](images/Workflow_Diagram.png)
+![Human Approval App Screenshot](Workflow_Diagram.png)
 
 ### 🚀 **Step 1: Trend Discovery**
 The **Trend Agent** kicks things off by researching the latest food trends. It leverages:
@@ -113,7 +113,7 @@ This human-in-the-loop approach ensures every piece of content meets your standa
 #### 📸 **Human Approval App Screenshot**
 Here's how the review interface looked during our test execution:
 
-![Human Approval App Screenshot](images/Content%20Studio%20—%20Review.jpg)
+![Human Approval App Screenshot](Content%20Studio%20—%20Review.jpg)
 
 ### 📤 **Step 5: Publishing (In Development)**
 Once approved, the **Publisher Agent** will handle:
