@@ -1,6 +1,15 @@
 import uuid
+import logging
 from graph.builder import build_graph
 from graph.state import ContentState
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,  # Set to INFO for less verbose, DEBUG for detailed state logs
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+
+logger = logging.getLogger("main")
 
 def run():
     graph = build_graph()
@@ -24,16 +33,16 @@ def run():
         "errors": []
     }
 
-    print(f"🚀 Starting run: {thread_id}")
-    print("=" * 50)
+    logger.info(f"🚀 Starting run: {thread_id}")
+    logger.info("=" * 50)
 
     # First invoke — runs until interrupt_before=["human_review"]
     result = graph.invoke(initial_state, config)
 
-    print("\n⏸️  Graph paused for human review.")
-    print(f"Thread ID saved: {thread_id}")
-    print("Open the Streamlit UI to review and approve.")
-    print(f"\n👉 Run: streamlit run ui/human_approval_app.py -- --thread_id {thread_id}")
+    logger.info("\n⏸️  Graph paused for human review.")
+    logger.info(f"Thread ID saved: {thread_id}")
+    logger.info("Open the Streamlit UI to review and approve.")
+    logger.info(f"\n👉 Run: streamlit run ui/human_approval_app.py -- --thread_id {thread_id}")
 
 if __name__ == "__main__":
     run()

@@ -29,8 +29,19 @@ def route_after_review(state: ContentState) -> str:
     elif status == "rejected":
         return END
     elif status == "edit_requested":
-        return "content_node"   # Re-generate content with feedback
+        return "content_node"       # Re-generate content with feedback
+    elif status == "regenerate_image":
+        return "image_agent"        # Re-generate image with feedback
+    elif status == "regenerate_both":
+        return "regenerate_both"    # Fan-out node → both branches in parallel
     return END
+
+
+def regenerate_both_node(state: ContentState) -> ContentState:
+    """
+    Passthrough fan-out node to call both content_node and image_agent to regenerate.
+    """
+    return state
 
 
 def build_graph():
@@ -43,6 +54,7 @@ def build_graph():
     graph.add_node("content_node", content_node)
     graph.add_node("image_agent", image_node)
     graph.add_node("human_review", human_review_node)
+    graph.add_node("regenerate_both", regenerate_both_node)
     graph.add_node("publisher", publisher_node)
 
     # --- Entry point ---
@@ -65,11 +77,16 @@ def build_graph():
         "human_review",
         route_after_review,
         {
-            "publisher": "publisher",
-            "content_node": "content_node",   # edit loop
-            END: END
+            "publisher":        "publisher",
+            "content_node":     "content_node",
+            "image_agent":      "image_agent",
+            "regenerate_both":  "regenerate_both",
+            END:                END,
         }
     )
+
+    graph.add_edge("regenerate_both", "content_node")
+    graph.add_edge("regenerate_both", "image_agent")
 
     graph.add_edge("publisher", END)
 

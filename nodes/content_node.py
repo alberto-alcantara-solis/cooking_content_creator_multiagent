@@ -252,6 +252,7 @@ def content_node(state: ContentState) -> dict:
     """
     run_id = state.get("run_id", "unknown")
     logger.info("=== Content node START (run_id=%s) ===", run_id)
+    logger.debug("State before content_node: %s", json.dumps(state, indent=2, default=str))
 
     recipe = state.get("recipe")
     if not recipe:
@@ -305,7 +306,7 @@ def content_node(state: ContentState) -> dict:
             len(instagram_content["hashtags"]),
         )
 
-        return {
+        result = {
             "instagram_content": instagram_content,
             "human_review": {
                 "status":   "pending",
@@ -313,12 +314,16 @@ def content_node(state: ContentState) -> dict:
             },
             "current_step": step_label,
         }
+        logger.debug("Content node result: %s", json.dumps(result, indent=2, default=str))
+        return result
 
     except Exception as e:
         logger.exception("Content node FAILED: %s", e)
 
         existing_errors = state.get("errors") or []
-        return {
+        result = {
             "errors":       existing_errors + [f"content_node: {str(e)}"],
             "current_step": "content_generation_failed",
         }
+        logger.debug("Content node error result: %s", json.dumps(result, indent=2, default=str))
+        return result

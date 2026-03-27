@@ -227,6 +227,7 @@ def recipe_node(state: ContentState) -> dict:
     """
     run_id = state.get("run_id", "unknown")
     logger.info("=== Recipe node START (run_id=%s) ===", run_id)
+    logger.debug("State before recipe_node: %s", json.dumps(state, indent=2, default=str))
 
     selected_topic  = state.get("selected_topic", "")
     trending_topics = state.get("trending_topics", [])
@@ -236,10 +237,12 @@ def recipe_node(state: ContentState) -> dict:
         logger.error(error_msg)
         existing_errors = state.get("errors", [])
         existing_errors.append(error_msg)
-        return {
+        result = {
             "errors":       existing_errors,
             "current_step": "recipe_generation_failed",
         }
+        logger.debug("Recipe node early error result: %s", json.dumps(result, indent=2, default=str))
+        return result
 
     try:
         recipe = _invoke_recipe_node(
@@ -254,16 +257,20 @@ def recipe_node(state: ContentState) -> dict:
             recipe["prep_time"],
         )
 
-        return {
+        result = {
             "recipe":       recipe,
             "current_step": "recipe_generation_complete",
         }
+        logger.debug("Recipe node result: %s", json.dumps(result, indent=2, default=str))
+        return result
 
     except Exception as e:
         logger.exception("Recipe Node FAILED: %s", e)
 
         existing_errors = state.get("errors") or []
-        return {
+        result = {
             "errors":       existing_errors + [f"recipe_node: {str(e)}"],
             "current_step": "recipe_generation_failed",
         }
+        logger.debug("Recipe node error result: %s", json.dumps(result, indent=2, default=str))
+        return result
