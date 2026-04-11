@@ -7,7 +7,7 @@ from nodes.trend_agent import trend_node
 from nodes.recipe_node import recipe_node
 from nodes.content_node import content_node
 from nodes.image_agent import image_node
-from nodes.publisher_agent import publisher_node
+from nodes.publisher_node import publisher_node
 from graph.human_approval import get_checkpointer
 
 
