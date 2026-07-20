@@ -220,6 +220,7 @@ def trend_node(state: ContentState) -> dict:
     """
     run_id = state.get("run_id", "unknown")
     logger.info("=== Trend Agent START (run_id=%s) ===", run_id)
+    logger.debug("State before trend_agent: %s", json.dumps(state, indent=2, default=str))
 
     try:
         result = _invoke_trend_agent(
@@ -233,17 +234,21 @@ def trend_node(state: ContentState) -> dict:
             result["trending_topics"],
         )
 
-        return {
+        result_dict = {
             "trending_topics": result["trending_topics"],
             "selected_topic":  result["selected_topic"],
             "current_step":    "trend_research_complete",
         }
+        logger.debug("Trend agent result: %s", json.dumps(result_dict, indent=2, default=str))
+        return result_dict
 
     except Exception as e:
         logger.exception("Trend Agent FAILED: %s", e)
 
         existing_errors = state.get("errors") or []
-        return {
+        result_dict = {
             "errors":       existing_errors + [f"trend_agent: {str(e)}"],
             "current_step": "trend_research_failed",
         }
+        logger.debug("Trend agent error result: %s", json.dumps(result_dict, indent=2, default=str))
+        return result_dict

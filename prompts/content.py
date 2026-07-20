@@ -69,8 +69,8 @@ No markdown fences, no preamble, no commentary.
 - The recipe title may appear once in the body, not in the hook.
 
 ### Length:
-- Aim for 1600-1900 words. Instagram truncates at ~125 characters; the hook must earn the "more" tap.
-- Hard cap: 2,000 characters (Instagram's limit). character_count must reflect len(caption).
+- Aim for 1700-1900 characters. Instagram truncates at ~125 characters; the hook must earn the "more" tap.
+- Hard cap: 2000 characters (Instagram's limit). character_count must reflect len(caption).
 
 ---
 

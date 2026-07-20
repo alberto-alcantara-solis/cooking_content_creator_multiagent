@@ -90,7 +90,7 @@ The absolute most important thing about the prompt is that you must picture how 
 OUTPUT FORMAT  (CRITICAL — Final Answer only)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 When you are done (approved OR max attempts reached), output your Final Answer
-as ONLY a valid JSON object — no preamble, no markdown:
+as ONLY a valid JSON object — no preamble, no markdown.Tis is an example of the expected output format:
 
 {{
   "local_path":        "/absolute/path/to/image.png",
@@ -139,8 +139,8 @@ Prep time     : {prep_time}
 ━━ KEY INGREDIENTS (infer colours, textures, plating style from these) ━━
 {ingredients_list}
 
-━━ FIRST STEP (hints at cooking method and final texture) ━━
-{first_step}
+━━ STEPS (hints at cooking method and final texture) ━━
+{step_paragraph}
 
 ━━ TASK ━━
 run_id = "{run_id}"
@@ -170,7 +170,7 @@ def build_image_human_message(recipe: RecipeData, selected_topic: str, run_id: s
         A ready-to-send string for the HumanMessage.
     """
     ingredients_list = "\n".join(f"  - {i}" for i in recipe["ingredients"])
-    first_step       = recipe["steps"][0] if recipe["steps"] else "N/A"
+    step_paragraph     = "\n".join(f"  - {s}" for s in recipe["steps"]) if recipe["steps"] else "N/A"
 
     return IMAGE_AGENT_HUMAN_PROMPT.format(
         title=recipe["title"],
@@ -179,7 +179,7 @@ def build_image_human_message(recipe: RecipeData, selected_topic: str, run_id: s
         difficulty=recipe["difficulty"],
         prep_time=recipe["prep_time"],
         ingredients_list=ingredients_list,
-        first_step=first_step,
+        step_paragraph=step_paragraph,
         run_id=run_id
     ).strip()
 
@@ -227,3 +227,75 @@ Output ONLY valid JSON — no markdown, no preamble:
   "prompt_revision_hint": "How to fix the prompt if score < {CRITIQUE_PASS_THRESHOLD} (max 20 words, or null if approved)."
 }}
 """
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  EDIT LOOP HUMAN PROMPT (re-entry after human_review = regenerate_image)
+# ─────────────────────────────────────────────────────────────────────────────
+IMAGE_AGENT_EDIT_PROMPT = """
+The human reviewer has requested a new image for this recipe.
+
+━━ RECIPE ━━
+Title         : {title}
+Trending hook : {selected_topic}
+Description   : {description}
+Difficulty    : {difficulty}
+Prep time     : {prep_time}
+
+━━ KEY INGREDIENTS ━━
+{ingredients_list}
+
+━━ STEPS ━━
+{step_paragraph}
+
+━━ PREVIOUS IMAGE ━━
+The previous image was rejected. Previous prompt used: {previous_prompt}
+
+━━ REVIEWER FEEDBACK ━━
+{image_feedback}
+
+━━ TASK ━━
+run_id = "{run_id}"
+
+The reviewer's feedback above is your primary revision brief — address every point directly.
+Do NOT reuse the previous prompt; write a new one that fixes the criticised aspects while
+keeping everything that was working.
+
+Follow your system prompt workflow:
+  1. Write a revised prompt  →  2. generate_food_image  →  3. critique_food_image  →  4. Decide
+
+Use run_id="{run_id}" when calling generate_food_image.
+Output your Final Answer JSON when finished.
+"""
+
+
+def build_image_edit_message(recipe: RecipeData, selected_topic: str, run_id: str, previous_image: dict, image_feedback: str,) -> str:
+    """
+    Build the edit-loop human-turn message when a human reviewer requests
+    a new image.
+
+    Args:
+        recipe:           RecipeData from state.
+        selected_topic:   The trending topic string.
+        run_id:           Pipeline run ID.
+        previous_image:   The previous ImageData dict.
+        image_feedback:   Free-text feedback from state["human_review"]["image_feedback"].
+
+    Returns:
+        A ready-to-send string for the HumanMessage.
+    """
+    ingredients_list = "\n".join(f"  - {i}" for i in recipe["ingredients"])
+    step_paragraph     = "\n".join(f"  - {s}" for s in recipe["steps"]) if recipe["steps"] else "N/A"
+
+    return IMAGE_AGENT_EDIT_PROMPT.format(
+        title=recipe["title"],
+        selected_topic=selected_topic,
+        description=recipe["description"],
+        difficulty=recipe["difficulty"],
+        prep_time=recipe["prep_time"],
+        ingredients_list=ingredients_list,
+        step_paragraph=step_paragraph,
+        previous_prompt=previous_image.get("comfyui_prompt", "N/A"),
+        image_feedback=image_feedback,
+        run_id=run_id,
+    ).strip()

@@ -21,7 +21,7 @@ import logging
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage
 from langchain_core.tools import tool
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 from graph.state import ContentState, ImageData
 from tools.comfyui_tools import generate_food_image
@@ -30,6 +30,7 @@ from prompts.image import (
     IMAGE_AGENT_SYSTEM_PROMPT,
     IMAGE_AGENT_RETRY_PROMPT,
     build_image_human_message,
+    build_image_edit_message,
 )
 
 
@@ -49,10 +50,10 @@ def _build_image_agent():
         max_tokens=4096,   # focused enough for JSON output and structured reasoning
     )
 
-    agent = create_react_agent(
+    agent = create_agent(
         model=llm,
         tools=[generate_food_image, critique_food_image],
-        prompt=IMAGE_AGENT_SYSTEM_PROMPT,
+        system_prompt=IMAGE_AGENT_SYSTEM_PROMPT,
     )
 
     return agent
@@ -108,15 +109,17 @@ def _parse_image_agent_output(raw_text: str) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 #  Core agent invocation with retry
 # ─────────────────────────────────────────────────────────────────────────────
-def _invoke_image_agent(recipe, selected_topic: str, run_id: str, max_retries: int = 2) -> dict:
+def _invoke_image_agent(recipe, selected_topic: str, run_id: str, max_retries: int = 2, previous_image: dict | None = None, image_feedback: str | None = None) -> dict:
     """
     Run the ReAct agent loop and return a parsed result dict.
 
     Args:
-        recipe:          RecipeData from state.
-        selected_topic:  The trending topic string.
-        run_id:          Pipeline run ID.
-        max_retries:     How many times to re-prompt if the Final Answer JSON is bad.
+        recipe:           RecipeData from state.
+        selected_topic:   The trending topic string.
+        run_id:           Pipeline run ID.
+        max_retries:      How many times to re-prompt if the Final Answer JSON is bad.
+        previous_image:   ImageData from state (edit loop only).
+        image_feedback:   Reviewer's free-text feedback (edit loop only).
 
     Returns:
         Validated result dict.
@@ -124,11 +127,23 @@ def _invoke_image_agent(recipe, selected_topic: str, run_id: str, max_retries: i
     Raises:
         RuntimeError: If all retries are exhausted.
     """
-    human_message = build_image_human_message(
-        recipe=recipe,
-        selected_topic=selected_topic,
-        run_id=run_id,
-    )
+    is_edit_loop = bool(image_feedback and previous_image)
+
+    if is_edit_loop:
+        logger.info("Image agent: edit loop triggered. Feedback: '%s'", image_feedback)
+        human_message = build_image_edit_message(
+            recipe=recipe,
+            selected_topic=selected_topic,
+            run_id=run_id,
+            previous_image=previous_image,
+            image_feedback=image_feedback,
+        )
+    else:
+        human_message = build_image_human_message(
+            recipe=recipe,
+            selected_topic=selected_topic,
+            run_id=run_id,
+        )
 
     agent_input  = {"messages": [HumanMessage(content=human_message)]}
     last_error   = None
@@ -206,24 +221,32 @@ def image_node(state: ContentState) -> dict:
     """
     run_id = state.get("run_id", "unknown")
     logger.info("=== Image Agent START (run_id=%s) ===", run_id)
+    logger.debug("State before image_agent: %s", json.dumps(state, indent=2, default=str))
 
     recipe = state.get("recipe")
     if not recipe:
         error_msg = "image_agent: 'recipe' missing from state — recipe_node may have failed."
         logger.error(error_msg)
-        return {
+        result = {
             "image": ImageData(comfyui_prompt="", local_path="", status="failed"),
             "errors":       (state.get("errors") or []) + [error_msg],
             "current_step": "image_generation_failed",
         }
+        logger.debug("Image agent early error result: %s", json.dumps(result, indent=2, default=str))
+        return result
 
     selected_topic = state.get("selected_topic", "")
+    human_review   = state.get("human_review", {})
+    image_feedback = human_review.get("image_feedback", None)
+    previous_image = state.get("image") if image_feedback else None
 
     try:
         result = _invoke_image_agent(
             recipe=recipe,
             selected_topic=selected_topic,
             run_id=run_id,
+            previous_image=previous_image,
+            image_feedback=image_feedback,
         )
 
         status     = result.get("status", "failed")
@@ -249,16 +272,25 @@ def image_node(state: ContentState) -> dict:
             feedback = result.get("critique_feedback", "No feedback available.")
             extra_errors = [f"image_agent: generation marked failed. Feedback: {feedback}"]
 
-        return {
+        # Reset image_feedback so a re-run doesn't re-apply the same feedback
+        current_review = state.get("human_review", {})
+        updated_review = {**current_review, "image_feedback": None}
+
+        result = {
             "image":        image_data,
+            "human_review": updated_review,
             "errors":       (state.get("errors") or []) + extra_errors,
             "current_step": "image_generation_complete" if status == "ready" else "image_generation_failed",
         }
+        logger.debug("Image agent result: %s", json.dumps(result, indent=2, default=str))
+        return result
 
     except Exception as e:
         logger.exception("Image Agent FAILED with unhandled exception: %s", e)
-        return {
+        result = {
             "image": ImageData(comfyui_prompt="", local_path="", status="failed"),
             "errors":       (state.get("errors") or []) + [f"image_agent: {str(e)}"],
             "current_step": "image_generation_failed",
         }
+        logger.debug("Image agent exception result: %s", json.dumps(result, indent=2, default=str))
+        return result

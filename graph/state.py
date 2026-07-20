@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Literal
+from typing import TypedDict, Optional, Literal, Annotated
 
 
 class PlatformContent(TypedDict):
@@ -23,14 +23,22 @@ class ImageData(TypedDict):
 
 
 class HumanReview(TypedDict):
-    status: Literal["pending", "approved", "rejected", "edit_requested"]
-    feedback: Optional[str]   # If user requests edits
+    status: Literal[
+        "pending",
+        "approved",
+        "rejected",
+        "edit_requested",       # Re-generate content only
+        "regenerate_image",     # Re-generate image only
+        "regenerate_both",      # Re-generate content AND image
+    ]
+    feedback: Optional[str]         # Content revision feedback
+    image_feedback: Optional[str]   # Image revision feedback
 
 
 class ContentState(TypedDict):
     # --- Orchestration ---
     run_id: str
-    current_step: str
+    current_step: Annotated[str, lambda a, b: b]
 
     # --- Trend Research ---
     trending_topics: list[str]
@@ -48,11 +56,11 @@ class ContentState(TypedDict):
     image: Optional[ImageData]
 
     # --- Human review ---
-    human_review: HumanReview
+    human_review: Annotated[HumanReview, lambda a, b: {**a, **b}]
 
     # --- Publishing ---
     buffer_ig_post_id: Optional[str]
     published: bool
 
     # --- Error handling ---
-    errors: list[str]
+    errors: Annotated[list[str], lambda a, b: a + b]
